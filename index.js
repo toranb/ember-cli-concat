@@ -391,7 +391,7 @@ module.exports = {
 
     /* Combine all the files into the project's tree */
 
-    var workingTree = mergeTrees([tree, concatenatedScripts, concatenatedStyles]);
+    var workingTree = mergeTrees([tree, concatenatedScripts, concatenatedStyles], { overwrite: true });
 
     /* Remove the unnecessary files */
     if (!this.preserveOriginals) {
