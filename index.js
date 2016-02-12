@@ -347,8 +347,8 @@ module.exports = {
 
     if (testing) {
       var testScriptPaths = paths.testSupport['js'];
-      for (var scriptPath in testScriptPaths) {
-        scriptInputFiles.push(cleanPath(testScriptPaths[scriptPath]));
+      if(typeof testScriptPaths === 'string') {
+          scriptInputFiles.push(cleanPath(testScriptPaths));
       }
     }
 
