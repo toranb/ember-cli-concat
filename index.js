@@ -3,6 +3,7 @@
 
 /* Dependencies */
 
+var stew = require('broccoli-stew');
 var concat = require('broccoli-sourcemap-concat');
 var fileRemover = require('broccoli-file-remover');
 var mergeTrees = require('broccoli-merge-trees');
@@ -332,12 +333,15 @@ module.exports = {
     ];
 
     if (testing) {
-      scriptInputFiles.push(cleanPath(paths.testSupport['js']));
+        if(typeof paths.testSupport['js'] === 'string') {
+            scriptInputFiles.push(cleanPath(paths.testSupport['js']));
+        }
     }
 
     scriptInputFiles.push(cleanPath(paths.app['js']));
 
-    var concatenatedScripts = concat(tree, {
+    var mochaFreeTree = stew.rm(tree, 'assets/test-loader.js');
+    var concatenatedScripts = concat(mochaFreeTree, {
       allowNone: true,
       inputFiles: scriptInputFiles,
       outputFile: outputPath + '.js',
@@ -375,7 +379,7 @@ module.exports = {
 
     /* Combine all the files into the project's tree */
 
-    var workingTree = mergeTrees([tree, concatenatedScripts, concatenatedStyles]);
+    var workingTree = mergeTrees([tree, concatenatedScripts, concatenatedStyles], { overwrite: true });
 
     /* Remove the unnecessary files */
 
